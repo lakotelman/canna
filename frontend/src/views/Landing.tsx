@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { LandingLayout } from "../layouts/Landing";
+import { Link } from "react-router-dom";
 function Landing() {
-   
   return (
     <>
       <nav className="flex items-center md:justify-center mx-auto container p-6 gap-10 justify-between">
@@ -10,7 +10,7 @@ function Landing() {
             href="#"
             className="hidden mt-8 w-40 justify-center rounded-full p-2 text-black md:flex items-center hover:bg-lightPink bg-lightGreen"
           >
-            Login
+            <Link to="/Login">Login</Link>
           </a>
         </div>
 

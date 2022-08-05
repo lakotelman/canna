@@ -5,12 +5,12 @@ export default function TabNavigationAll() {
     <>
       <div className="hidden md:flex justify-start mx-4 md:mx-12 h-[90%]">
         <div className="flex justify-start gap-12 mt-4">
-          <TabsNav color={TabColors.lightLavender} destination="/projects">
+          <TabsNav color={TabColors.lightLavender} destination="/Projects">
             <div>
               <p>Projects</p>
             </div>
           </TabsNav>
-          <TabsNav color={TabColors.lightGreen} destination="/visions">
+          <TabsNav color={TabColors.lightGreen} destination="/Visions">
             <div>
               <p>Visions</p>
             </div>
