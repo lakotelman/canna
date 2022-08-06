@@ -1,4 +1,4 @@
-from app import db
+from .core import db
 from datetime import datetime
 
 
@@ -8,11 +8,41 @@ class User(db.Model):
     name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default="default_profile.jpg")
-    password = db.Column(db.String(60), nullable=False)
+    hashed_password = db.Column(db.String(200), nullable=False)
+    roles=db.Column(db.String)
+    is_active = db.Column(db.Boolean, default=True, server_default="true")
     visions = db.relationship("Visionboard", backref="author", lazy=True)
 
     def __repr__(self):
         return f"User({self.username}, {self.email}, {self.image_file}"
+
+    @property
+    def identity(self): 
+        return self.id
+
+#Required from praetorian to use the package, but ultimately I'm not using it yet.
+    @property 
+    def rolenames(self): 
+        try:
+            return self.roles.split(",")
+        except Exception:
+            return []
+
+    @property 
+    def password(self): 
+        return self.hashed_password
+
+    @classmethod 
+    def lookup(cls, username): 
+        return cls.query.filter_by(username=username).one_or_none()
+
+    @classmethod 
+    def identify(cls, id): 
+        return cls.query.get(id)
+    
+    def is_valid(self): 
+        return self.is_active
+
 
 
 class Visionboard(db.Model):
