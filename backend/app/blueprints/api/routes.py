@@ -9,7 +9,7 @@ def api():
     return "This is an empty home page."
 
 
-@app.route("/login", methods=["POST"])
+@app.route("/api/login", methods=["POST"])
 def login():
     req = flask.request.get_json(force=True)
     username = req.get("username", None)
