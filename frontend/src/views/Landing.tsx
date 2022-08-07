@@ -6,12 +6,12 @@ function Landing() {
     <>
       <nav className="flex items-center md:justify-center mx-auto container p-6 gap-10 justify-between">
         <div className="hidden md:block">
-          <a
-            href="#"
+          <div
+            
             className="hidden mt-8 w-40 justify-center rounded-full p-2 text-black md:flex items-center hover:bg-lightPink bg-lightGreen"
           >
             <Link to="/Login">Login</Link>
-          </a>
+          </div>
         </div>
 
         <div className="">
