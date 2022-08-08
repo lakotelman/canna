@@ -1,5 +1,5 @@
 from ...core import db, guard
-import simplejson as json
+import orjson
 from ...models import User
 from . import bp as app
 import flask
@@ -67,8 +67,13 @@ def registration():
 @app.route("/api/projects")
 @flask_praetorian.auth_required
 def protected():
-    # all_proj= []
-    # for project in user_projects:
-    #     all_proj.append(project.__dict__)
-
-    return {"projects": "", "username": flask_praetorian.current_user().username}
+    all_proj= []
+    username = flask_praetorian.current_user().username
+    user_projects = flask_praetorian.current_user().projects
+    for project in user_projects:
+        all_proj.append(project.project_dict())
+    payload = {
+        "projects": all_proj,
+        "username": username.title()
+    }
+    return orjson.dumps(payload)

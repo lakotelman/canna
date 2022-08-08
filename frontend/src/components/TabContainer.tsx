@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import AddButton from "./AddButton";
 
+
 export enum Colors {
   lightGreen,
   lightLavender,
@@ -26,11 +27,12 @@ export default function TabContainer(props: Props) {
           })}
         >
           <div className=" bg-white mx-auto my-4 h-[95%] w-[95%] p-32 rounded-3xl outline-white outline-3 outline-dotted outline-offset-4 relative">
+
             <div className="flex justify-center gap-32 align-top divide-x-2">
               {props.children}
             </div>
             <div className="">
-              <AddButton destination="/projects/edit"/>
+              <AddButton destination="/projects/edit" />
             </div>
           </div>
         </div>

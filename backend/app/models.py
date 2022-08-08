@@ -81,6 +81,15 @@ class Project(db.Model):
     def __repr__(self):
         return f"Project({self.title}, {self.date_created}"
 
+    def project_dict(self):
+        return { 
+            "id": self.id,
+            "title":self.title,
+            "date_created":  self.date_created,
+            "user_id": self.user_id,
+            "milestones": [m.milestone_dict() for m in self.milestones]
+        }
+
 
 class Milestone(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -89,9 +98,26 @@ class Milestone(db.Model):
     project_id = db.Column(db.Integer, db.ForeignKey("project.id"), nullable=False)
     tasks = db.relationship("Task", backref="milestones", lazy=True)
 
+    def milestone_dict(self):
+        return { 
+            "id": self.id,
+            "title":self.title,
+            "date_created":  self.date_created,
+            "project_id": self.project_id,
+            "tasks": [t.task_dict() for t in self.tasks]
+        }
+
 
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50), nullable=False)
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     milestone_id = db.Column(db.Integer, db.ForeignKey("milestone.id"), nullable=False)
+
+    def task_dict(self):
+        return { 
+            "id": self.id,
+            "title":self.title,
+            "date_created":  self.date_created,
+            "milestone_id": self.milestone_id
+        }
