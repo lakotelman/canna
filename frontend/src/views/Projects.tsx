@@ -6,12 +6,9 @@ import ProjectDetails from "../components/ProjectDetails";
 import { useEffect, useState } from "react";
 import { authFetch, useAuth } from "../auth/AuthProvider";
 
-interface Project {
-  title: string;
-}
-
 function Projects() {
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [projects, setProjects] = useState([]);
+  const [currentProject, setCurrentProject] = useState({})
   const [userTitle, setUserTitle] = useState("");
   const [logged] = useAuth();
 
@@ -27,6 +24,7 @@ function Projects() {
       .then((response) => {
         if (response) {
           setProjects(response.projects);
+          setCurrentProject(response.projects[0])
           setUserTitle(response.username);
           console.log(response);
         }
@@ -40,15 +38,11 @@ function Projects() {
       <TabContainer color={Colors.lightLavender}>
         <>
           <div>
-            <AllProjectsList>
-              <>
-                {projects.map((proj) => {
-                  return <p className="px-2">{proj["title"]}</p>;
-                })}
-              </>
-            </AllProjectsList>
+            <AllProjectsList projects={projects} setProject={setCurrentProject}/>
           </div>
-          <div><ProjectDetails></ProjectDetails></div>
+          <div>
+            <ProjectDetails project={currentProject} />
+          </div>
         </>
       </TabContainer>
       {/* )} */}

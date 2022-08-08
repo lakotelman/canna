@@ -1,5 +1,14 @@
+import setCurrentProject from "../views/Projects";
+import projects from "../views/Projects";
+
+interface Project {
+  title: string;
+}
+
 interface Props {
   children?: JSX.Element;
+  projects: Project[];
+  setProject: React.Dispatch<React.SetStateAction<{}>>;
 }
 
 export default function AllProjectsList(props: Props) {
@@ -8,7 +17,18 @@ export default function AllProjectsList(props: Props) {
       <h2 className="text-2xl">All Projects</h2>
       <hr />
       <ul className="list-disc">
-        <li className="px-2">{props.children}</li>
+        {props.projects.map((proj, index) => {
+          return (
+            <li
+              onClick={() => props.setProject(proj)}
+              value={index}
+              key={index}
+              className="px-2 hover:cursor-pointer"
+            >
+              {proj["title"]}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
