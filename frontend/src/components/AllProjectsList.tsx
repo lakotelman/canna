@@ -1,17 +1,17 @@
-import setCurrentProject from "../views/Projects";
-import projects from "../views/Projects";
-
 interface Project {
-  title: string;
+  title?: string;
+  id?: Number;
 }
 
 interface Props {
   children?: JSX.Element;
   projects: Project[];
   setProject: React.Dispatch<React.SetStateAction<{}>>;
+  currentProject: Project;
 }
 
 export default function AllProjectsList(props: Props) {
+
   return (
     <div id="allProjects" className="tracking-widest leading-8">
       <h2 className="text-2xl">All Projects</h2>
@@ -21,13 +21,13 @@ export default function AllProjectsList(props: Props) {
           return (
             <li
               onClick={() => props.setProject(proj)}
-              value={index}
+              id={index.toString()}
               key={index}
-              className="px-2 hover:cursor-pointer"
+              className={"px-2 hover:cursor-pointer" + (proj.id === props.currentProject.id? " bg-lightGreen" : "" )}
             >
-              {proj["title"]}
-            </li>
-          );
+              {proj.title}
+            </li>)
+      
         })}
       </ul>
     </div>

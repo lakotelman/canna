@@ -9,6 +9,7 @@ function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [logged, session] = useAuth();
+
   const onSubmitClick = (e: any) => {
     e.preventDefault();
     console.log("You pressed login");

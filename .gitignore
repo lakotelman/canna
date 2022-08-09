@@ -27,3 +27,4 @@ dist-ssr
 .flaskenv 
 __pycache__
 migrations
+scratch.jsx

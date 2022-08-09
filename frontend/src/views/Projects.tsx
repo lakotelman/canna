@@ -10,7 +10,7 @@ function Projects() {
   const [projects, setProjects] = useState([]);
   const [currentProject, setCurrentProject] = useState({})
   const [userTitle, setUserTitle] = useState("");
-  const [logged] = useAuth();
+  const [logged, session] = useAuth();
 
   useEffect(() => {
     authFetch("http://127.0.0.1:5000/api/projects")
@@ -30,6 +30,10 @@ function Projects() {
         }
       });
   }, []);
+
+  const handleChangeProject = (proj: Object) => { 
+    
+  }
   return (
     <>
       {/* {!logged? (
@@ -38,7 +42,7 @@ function Projects() {
       <TabContainer color={Colors.lightLavender}>
         <>
           <div>
-            <AllProjectsList projects={projects} setProject={setCurrentProject}/>
+            <AllProjectsList projects={projects} setProject={setCurrentProject} currentProject={currentProject}/>
           </div>
           <div>
             <ProjectDetails project={currentProject} />

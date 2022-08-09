@@ -1,14 +1,14 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Landing from "./views/Landing";
+import Landing from "./views/LandingHeader";
 import Projects from "./views/Projects";
 import Visions from "./views/Visions";
 import Login from "./views/Login";
-import AddEditProject from "./views/AddEditProject";
+import AddProject from "./views/AddProject";
+import Register from "./views/Register";
 import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import "./App.css";
-
-
+import EditProject from "./views/EditProject";
 
 function App() {
   return (
@@ -17,9 +17,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/projects">
             <Route path="" element={<Projects />} />
-            <Route path="edit" element={<AddEditProject />} />
+            <Route path="add" element={<AddProject />} />
+            <Route path="edit" element={<EditProject />} />
           </Route>
           <Route path="/visions" element={<Visions />} />
         </Routes>

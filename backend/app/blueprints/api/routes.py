@@ -1,6 +1,6 @@
 from ...core import db, guard
 import orjson
-from ...models import User
+from ...models import User, Project
 from . import bp as app
 import flask
 import flask_praetorian
@@ -67,13 +67,29 @@ def registration():
 @app.route("/api/projects")
 @flask_praetorian.auth_required
 def protected():
-    all_proj= []
+    all_proj = []
     username = flask_praetorian.current_user().username
     user_projects = flask_praetorian.current_user().projects
     for project in user_projects:
         all_proj.append(project.project_dict())
-    payload = {
-        "projects": all_proj,
-        "username": username.title()
-    }
+    payload = {"projects": all_proj, "username": username.title()}
     return orjson.dumps(payload)
+
+
+@app.route("/api/addproject", methods=["POST"])
+@flask_praetorian.auth_required
+def add_project():
+    req = flask.request.get_json(force=True)
+    try:
+        db.session.add(
+            Project(
+                title=req.get("title"),
+                user_id=flask_praetorian.current_user().id,
+            )
+        )
+        db.session.commit()
+        return "You did it!"
+
+    except Exception as e:
+        print(e)
+        return "You broke it."
