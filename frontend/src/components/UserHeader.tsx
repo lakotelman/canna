@@ -1,4 +1,9 @@
+import { Navigate } from "react-router-dom";
+import { logout, useAuth } from "../auth/AuthProvider";
+
 export default function UserHeader() {
+  const [logged, session] = useAuth();
+
   return (
     <>
       <div className="font-nunito">
@@ -9,6 +14,16 @@ export default function UserHeader() {
               src="/cannalogo(1).webp"
               alt="logo of word 'canna'"
             />
+            {logged ? (
+              <button
+                className=" bg-lightLavender p-2 rounded-full"
+                onClick={logout}
+              >
+                Sign Out
+              </button>
+            ) : (
+              <></>
+            )}
           </div>
         </header>
         <hr />

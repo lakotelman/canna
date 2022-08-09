@@ -1,3 +1,4 @@
+import LandingHeader from "../components/LandingHeader";
 
 
 interface Props { 
@@ -7,6 +8,7 @@ interface Props {
 export function LandingLayout(props: Props){ 
     return(
         <>
+        <LandingHeader/>
         {props.children}
         </>
     )

@@ -8,7 +8,7 @@ import { authFetch, useAuth } from "../auth/AuthProvider";
 
 function Projects() {
   const [projects, setProjects] = useState([]);
-  const [currentProject, setCurrentProject] = useState({})
+  const [currentProject, setCurrentProject] = useState({});
   const [userTitle, setUserTitle] = useState("");
   const [logged, session] = useAuth();
 
@@ -24,32 +24,42 @@ function Projects() {
       .then((response) => {
         if (response) {
           setProjects(response.projects);
-          setCurrentProject(response.projects[0])
+          setCurrentProject(response.projects[0]);
           setUserTitle(response.username);
           console.log(response);
         }
       });
   }, []);
-
-  const handleChangeProject = (proj: Object) => { 
-    
-  }
   return (
     <>
-      {/* {!logged? (
-        <Navigate to="/login" />
-      ) : ( */}
-      <TabContainer color={Colors.lightLavender}>
-        <>
-          <div>
-            <AllProjectsList projects={projects} setProject={setCurrentProject} currentProject={currentProject}/>
-          </div>
-          <div>
-            <ProjectDetails project={currentProject} />
-          </div>
-        </>
-      </TabContainer>
-      {/* )} */}
+      {logged ? (
+        <TabContainer color={Colors.lightLavender}>
+          <>
+            <div>
+              <AllProjectsList
+                projects={projects}
+                setProject={setCurrentProject}
+                currentProject={currentProject}
+              />
+            </div>
+            <div>
+              <ProjectDetails project={currentProject} />
+            </div>
+          </>
+        </TabContainer>
+      ) : (
+        <TabContainer color={Colors.lightLavender}>
+          <>
+            <div className="mx-auto my-12">
+              <h1 className=" text-4xl">Please sign into your account</h1>
+              <button className=" m-4 bg-lightOrange p-2 rounded-full">
+                <Link to="/Login">Login</Link>
+              </button>
+            </div>
+          </>
+        </TabContainer>
+      )}
+      ;
     </>
   );
 }

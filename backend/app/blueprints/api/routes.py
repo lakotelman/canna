@@ -21,20 +21,20 @@ def login():
     return (flask.jsonify(ret), 200)
 
 
-@app.route("/api/refresh", methods=["POST"])
-def refresh():
-    """
-    Refreshes an existing JWT by creating a new one that is a copy of the old
-    except that it has a refrehsed access expiration.
-    .. example::
-       $ curl http://localhost:5000/api/refresh -X GET \
-         -H "Authorization: Bearer <your_token>"
-    """
-    print("refresh request")
-    old_token = request.get_data()
-    new_token = guard.refresh_jwt_token(old_token)
-    ret = {"access_token": new_token}
-    return ret, 200
+# @app.route("/api/refresh", methods=["POST"])
+# def refresh():
+#     """
+#     Refreshes an existing JWT by creating a new one that is a copy of the old
+#     except that it has a refrehsed access expiration.
+#     .. example::
+#        $ curl http://localhost:5000/api/refresh -X GET \
+#          -H "Authorization: Bearer <your_token>"
+#     """
+#     print("refresh request")
+#     old_token = request.get_data()
+#     new_token = guard.refresh_jwt_token(old_token)
+#     ret = {"access_token": new_token}
+#     return ret, 200
 
 
 @app.route("/api/registration", methods=["POST"])

@@ -25,7 +25,9 @@ export default function ProjectDetails(props: Props) {
   return (
     <>
       <div id="mileStones" className="leading-8">
-        {props.project.milestones?.map((milestone, index) => {
+      <h2 className="text-2xl tracking-widest mx-2">Project Details</h2>
+      <hr />
+        {props.project?.milestones?.map((milestone, index) => {
           return (
             <>
               <h3

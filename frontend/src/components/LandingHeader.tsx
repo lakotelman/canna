@@ -1,17 +1,16 @@
-import { useEffect } from "react";
-import { LandingLayout } from "../layouts/Landing";
-import { Link } from "react-router-dom";
-function Landing() {
-  return (
-    <>
+import { Link } from "react-router-dom"
+
+export default function LandingHeader(){ 
+    return (
+        <>
       <nav className="flex items-center md:justify-center mx-auto container p-6 gap-10 justify-between">
         <div className="hidden md:block">
-          <div
+          <Link to="/Login"><button
             
             className="hidden mt-8 w-40 justify-center rounded-full p-2 text-black md:flex items-center hover:bg-lightPink bg-lightGreen"
           >
-            <Link to="/Login">Login</Link>
-          </div>
+            Login
+          </button></Link>
         </div>
 
         <div className="">
@@ -23,12 +22,11 @@ function Landing() {
         </div>
 
         <div className="hidden md:block">
-          <a
-            href="#"
+         <Link to ="/Register"> <button
             className="hidden mt-8 w-40 justify-center rounded-full p-2 text-black md:flex items-center hover:bg-lightPink bg-lightOrange"
           >
             Register
-          </a>
+          </button></Link>
         </div>
         {/* <!---Small Screen Navigation --> */}
         <div
@@ -41,11 +39,11 @@ function Landing() {
             width="44"
             height="44"
             viewBox="0 0 24 24"
-            stroke-width="1"
+            strokeWidth="1"
             stroke="#000000"
             fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
             <line x1="4" y1="6" x2="20" y2="6" />
@@ -72,9 +70,5 @@ function Landing() {
         </div>
       </div>
     </>
-  );
-}
-
-export default function Page() {
-  return LandingLayout({ children: Landing() });
+    )
 }

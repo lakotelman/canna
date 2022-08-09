@@ -33,7 +33,7 @@ export default function TabContainer(props: Props) {
               {props.children}
             </div>
             <div className="">
-              <AddButton destination="/projects/edit" />
+              <AddButton destination="/projects/add" />
             </div>
           </div>
         </div>
