@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import MilestoneTaskInput from "./MilestoneTaskInput";
+import newProjPayload from "../auth/SubmitProjectData"
+
+
 
 interface Milestone {
   title: String;
@@ -11,22 +15,22 @@ interface Task {
   title: String;
 }
 
-export default function EditProjectDetails() {
+export default function EditProjectDetails(props: any) {
+  
   const [milestones, setMilestones] = useState<Milestone[]>([
     {
-      title: "maybe",
-      date_created: "why",
+      title: "",
+      date_created: "",
       tasks: [],
     },
   ]);
 
-  function getData(e: any) {
+  function postDatafromForm(e: any) {
     e.preventDefault();
     const formData = new FormData(e.target);
-    console.log(formData);
-
     const formObject = Object.fromEntries(formData);
-    console.log(formObject);
+    newProjPayload(formObject, parseInt(props.projectId));
+    console.log(formObject)
   }
 
   function removeMilestone(e: any) {
@@ -44,7 +48,7 @@ export default function EditProjectDetails() {
 
   return (
     <>
-      <form onSubmit={getData} className="w-full max-w-[50%]">
+      <form onSubmit={postDatafromForm} className="w-full max-w-[50%]">
         <div className="my-4">
           <button
             onClick={addMilestone}

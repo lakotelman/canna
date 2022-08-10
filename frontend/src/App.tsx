@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useParams,
+} from "react-router-dom";
 import Landing from "./views/Landing";
 import Projects from "./views/Projects";
 import Visions from "./views/Visions";
@@ -11,6 +16,7 @@ import "./App.css";
 import EditProject from "./views/EditProject";
 
 function App() {
+ 
   return (
     <>
       <Router>
@@ -21,7 +27,9 @@ function App() {
           <Route path="/projects">
             <Route path="" element={<Projects />} />
             <Route path="add" element={<AddProject />} />
-            <Route path="edit" element={<EditProject />} />
+            <Route path=":projectId">
+              <Route path="edit" element={<EditProject />} />
+            </Route>
           </Route>
           <Route path="/visions" element={<Visions />} />
         </Routes>

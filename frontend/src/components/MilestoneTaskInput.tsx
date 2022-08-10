@@ -1,6 +1,6 @@
 interface Props {
   id: Number;
-  name: String
+  name: String;
 }
 
 export default function MilestoneTaskInput(props: Props) {

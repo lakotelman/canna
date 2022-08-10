@@ -80,16 +80,23 @@ def protected():
 @flask_praetorian.auth_required
 def add_project():
     req = flask.request.get_json(force=True)
+    n = Project(
+        title=req.get("title"),
+        user_id=flask_praetorian.current_user().id,
+    )
     try:
-        db.session.add(
-            Project(
-                title=req.get("title"),
-                user_id=flask_praetorian.current_user().id,
-            )
-        )
+        db.session.add(n)
         db.session.commit()
-        return "You did it!"
+        db.session.refresh(n)
+        return flask.jsonify(n.id)
 
     except Exception as e:
         print(e)
         return "You broke it."
+
+
+@app.route("/api/newprojectdetails", methods=["POST"])
+@flask_praetorian.auth_required
+def new_project_details():
+    req = flask.request.get_json(force=True)
+    print(req)

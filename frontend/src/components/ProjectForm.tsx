@@ -1,17 +1,16 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthProvider";
 
 export default function NewProjectForm() {
+  const navigate = useNavigate();
   const [logged, session] = useAuth();
   const [projectTitle, setProjectTitle] = useState("");
-
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     let opts = {
       title: projectTitle,
     };
-    console.log(opts);
-
     const response = await fetch("http://127.0.0.1:5000/api/addproject", {
       method: "post",
       body: JSON.stringify(opts),
@@ -19,7 +18,8 @@ export default function NewProjectForm() {
         Authorization: `Bearer ${session?.access_token}`,
       }),
     });
-    console.log(response);
+    const data = await response.json();
+    navigate(`/projects/${data}/edit`);
   };
   const getProjectTitle = (e: any) => {
     setProjectTitle(e.target.value);
