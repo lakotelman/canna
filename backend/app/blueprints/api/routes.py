@@ -117,3 +117,9 @@ def new_project_details():
             db.session.commit()
 
     return (req)
+
+
+@app.route("/api/projects/<id>", methods = ["GET"])
+@flask_praetorian.auth_required
+def get_project_by_id(id): 
+    response = Project.query.filterBy(id=id)

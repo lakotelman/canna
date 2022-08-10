@@ -14,9 +14,8 @@ interface Task {
 }
 
 export default function EditProjectDetails(props: any) {
-  const { newProjPayload } = useContext(DataContext);
-  const navigate = useNavigate()
-
+  const { api } = useContext(DataContext);
+  const navigate = useNavigate();
   const [milestones, setMilestones] = useState<Milestone[]>([
     {
       title: "",
@@ -29,9 +28,9 @@ export default function EditProjectDetails(props: any) {
     e.preventDefault();
     const formData = new FormData(e.target);
     const formObject = Object.fromEntries(formData);
-    newProjPayload(formObject, parseInt(props.projectId));
+    api.newProjPayload(formObject, parseInt(props.projectId));
     console.log(formObject);
-    navigate("/projects")
+    navigate("/projects");
   }
 
   function removeMilestone(e: any) {

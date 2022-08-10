@@ -1,14 +1,15 @@
 import { DefaultLayout } from "../layouts/Default";
 import TabContainer, { Colors } from "../components/TabContainer";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import AllProjectsList from "../components/AllProjectsList";
-import ProjectDetails from "../components/ProjectDetails";
+import ProjectDetails, { Project } from "../components/ProjectDetails";
 import { useEffect, useState } from "react";
 import { authFetch, useAuth } from "../auth/AuthProvider";
 
 function Projects() {
   const [projects, setProjects] = useState([]);
-  const [currentProject, setCurrentProject] = useState({});
+  const navigate = useNavigate();
+  const [currentProject, setCurrentProject] = useState<Project>({});
   const [userTitle, setUserTitle] = useState("");
   const [logged, session] = useAuth();
 
@@ -30,6 +31,16 @@ function Projects() {
         }
       });
   }, []);
+
+  const editProjectClick = (e: any) => {
+    console.log(currentProject);
+    e.preventDefault();
+    if (!currentProject) {
+      console.error("No project set");
+    } else {
+      navigate(`/projects/${currentProject.id}/edit`);
+    }
+  };
   return (
     <>
       {logged ? (
@@ -44,6 +55,12 @@ function Projects() {
             </div>
             <div>
               <ProjectDetails project={currentProject} />
+              <button
+                onClick={editProjectClick}
+                className="bg-lightLavender p-2 rounded-full hover:bg-lightPink"
+              >
+                Edit Project
+              </button>
             </div>
           </>
         </TabContainer>

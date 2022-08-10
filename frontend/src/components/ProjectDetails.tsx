@@ -1,7 +1,8 @@
 import Task from "../components/Task";
 
-interface Project {
-  title?: String;
+export interface Project {
+  id?: number
+  title?: string;
   milestones?: Milestone[];
 }
 
@@ -25,8 +26,8 @@ export default function ProjectDetails(props: Props) {
   return (
     <>
       <div id="mileStones" className="leading-8">
-      <h2 className="text-2xl tracking-widest mx-2">Project Details</h2>
-      <hr />
+        <h2 className="text-2xl tracking-widest mx-2">Project Details</h2>
+        <hr />
         {props.project?.milestones?.map((milestone, index) => {
           return (
             <>
@@ -45,6 +46,7 @@ export default function ProjectDetails(props: Props) {
           );
         })}
       </div>
+      
     </>
   );
 }
