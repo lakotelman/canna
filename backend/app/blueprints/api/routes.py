@@ -1,6 +1,6 @@
 from ...core import db, guard
 import orjson
-from ...models import User, Project
+from ...models import User, Project, Milestone, Task
 from . import bp as app
 import flask
 import flask_praetorian
@@ -99,4 +99,21 @@ def add_project():
 @flask_praetorian.auth_required
 def new_project_details():
     req = flask.request.get_json(force=True)
-    print(req)
+    for milestone in req: 
+        print(milestone)
+        m = Milestone(
+            title = milestone["title"], 
+            project_id = milestone["project_id"], 
+        )
+        db.session.add(m)
+        db.session.commit()
+        db.session.refresh(m)
+        for task in milestone["tasks"]: 
+            t = Task( 
+                title= task["title"], 
+                milestone_id = m.id
+            )
+            db.session.add(t)
+            db.session.commit()
+
+    return (req)

@@ -1,8 +1,11 @@
 import { Navigate } from "react-router-dom";
 import { logout, useAuth } from "../auth/AuthProvider";
+import { useContext } from "react";
+import {DataContext} from "../contexts/DataProvider"
 
 export default function UserHeader() {
   const [logged, session] = useAuth();
+  const {message} = useContext(DataContext)
 
   return (
     <>
@@ -15,12 +18,13 @@ export default function UserHeader() {
               alt="logo of word 'canna'"
             />
             {logged ? (
-              <button
+             <> <button
                 className=" bg-lightLavender p-2 rounded-full"
                 onClick={logout}
               >
                 Sign Out
               </button>
+            </>
             ) : (
               <></>
             )}

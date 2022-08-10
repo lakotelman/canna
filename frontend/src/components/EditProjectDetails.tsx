@@ -1,9 +1,7 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import MilestoneTaskInput from "./MilestoneTaskInput";
-import newProjPayload from "../auth/SubmitProjectData"
-
-
+import { DataContext } from "../contexts/DataProvider";
 
 interface Milestone {
   title: String;
@@ -16,7 +14,9 @@ interface Task {
 }
 
 export default function EditProjectDetails(props: any) {
-  
+  const { newProjPayload } = useContext(DataContext);
+  const navigate = useNavigate()
+
   const [milestones, setMilestones] = useState<Milestone[]>([
     {
       title: "",
@@ -30,7 +30,8 @@ export default function EditProjectDetails(props: any) {
     const formData = new FormData(e.target);
     const formObject = Object.fromEntries(formData);
     newProjPayload(formObject, parseInt(props.projectId));
-    console.log(formObject)
+    console.log(formObject);
+    navigate("/projects")
   }
 
   function removeMilestone(e: any) {
