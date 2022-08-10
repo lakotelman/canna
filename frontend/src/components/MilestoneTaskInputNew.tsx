@@ -16,9 +16,13 @@ export default function MilestoneTaskInputNew(props: Props) {
   function handleTasks(event: any) {
     let wholeString = event.target.value;
     const result = wholeString.split(/\r?\n/);
+    let newTasks = []
+    for(let str in result){ 
+      
+    }
     props.updateMilestone({
       ...props.milestone,
-      tasks: [...event.target.value],
+      tasks: result,
     });
   }
 
@@ -49,8 +53,8 @@ export default function MilestoneTaskInputNew(props: Props) {
         </label>
         <div className="">
           <textarea
-          // onChange={handleTasks}
-          //   value={props.milestone.tasks?.map((task) => task.title + "\n")}
+            onChange={handleTasks}
+            value={props.milestone.tasks?.reduce(((pv, task) =>pv+=task.title + "\n"), "")}
             className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 mb-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-lightPink"
             id={"Task " + props.milestone.id}
             name={"tasks" + props.milestone.id.toString()}

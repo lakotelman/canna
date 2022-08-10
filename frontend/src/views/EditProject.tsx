@@ -58,6 +58,7 @@ function editProject() {
 
     project.milestones[idx] = m;
     setProject({ ...project });
+    console.log(project)
   }
 
   return (
