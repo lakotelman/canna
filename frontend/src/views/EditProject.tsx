@@ -3,8 +3,8 @@ import { useParams } from "react-router-dom";
 import { useApi } from "../api/api";
 import { Milestone, Project } from "../api/types";
 import { authFetch } from "../auth/AuthProvider";
-import EditProjectDetails from "../components/EditProjectDetails";
 import MilestoneTaskInputNew from "../components/MilestoneTaskInputNew";
+import ProjectDetails from "../components/ProjectDetails";
 import TabContainer, { Colors } from "../components/TabContainer";
 import { DefaultLayout } from "../layouts/Default";
 
@@ -19,7 +19,7 @@ function editProject() {
       project_id: projectId!,
       title: "",
       date_created: "",
-      tasks: [],
+      tasks: [{ title: "" }],
     };
   }
 
@@ -37,8 +37,8 @@ function editProject() {
     e.preventDefault();
   }
 
-  // =============================
   // Milestone Actions
+  // =============================
 
   function addMilestone(e: any) {
     if (!project.milestones) {
@@ -46,6 +46,37 @@ function editProject() {
     }
     project.milestones.push(milestoneFactory());
     setProject({ ...project });
+  }
+
+  function moveMilestoneDown(e: any, idx: number) {
+    if (!project.milestones) {
+      project.milestones = [];
+    }
+    console.log("clickity");
+    if (idx != project.milestones.length - 1) {
+      let milestone = project.milestones[idx];
+      project.milestones.splice(idx, 1);
+      let newIdx = idx + 1;
+      let newOrder = project.milestones.splice(newIdx, 0, milestone);
+      setProject({ ...project });
+    } else {
+      return;
+    }
+  }
+
+  function moveMilestoneUp(e: any, idx: number) {
+    if (!project.milestones) {
+      project.milestones = [];
+    }
+    if (idx != 0) {
+      let milestone = project.milestones[idx];
+      project.milestones.splice(idx, 1);
+      let newIdx = idx - 1;
+      let newOrder = project.milestones.splice(newIdx, 0, milestone);
+      setProject({ ...project });
+    } else {
+      return;
+    }
   }
 
   function updateMilestone(idx: number, m: Milestone): void {
@@ -58,27 +89,28 @@ function editProject() {
 
     project.milestones[idx] = m;
     setProject({ ...project });
-    console.log(project)
+    console.log(project);
   }
 
   return (
     <>
       <TabContainer color={Colors.lightLavender}>
-        <div>
-          <div className="my-4">
-            <button
-              onClick={addMilestone}
-              className="shadow bg-lightOrange hover:bg-lightPink focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded-full"
-              type="submit"
-            >
-              Add Milestone
-            </button>
-          </div>
-          <form onSubmit={submitForm} className="w-full">
+        <div className="w-5/6">
+          <h1 className="text-3xl">{project.title}</h1>
+          <button
+            onClick={addMilestone}
+            className="bg-lightOrange p-2 rounded-full"
+          >
+            Add Milestone
+          </button>
+          <div className="my-4"></div>
+          <form onSubmit={submitForm} className="">
             {project.milestones &&
               project.milestones.map((m, i) => {
                 return (
                   <MilestoneTaskInputNew
+                    moveMilestoneUp={(e) => moveMilestoneUp(e, i)}
+                    moveMilestoneDown={(e) => moveMilestoneDown(e, i)}
                     milestone={m}
                     updateMilestone={(newm) => updateMilestone(i, newm)}
                   />
