@@ -1,21 +1,5 @@
+import { Project } from "../api/types";
 import Task from "../components/Task";
-
-export interface Project {
-  id?: number
-  title?: string;
-  milestones?: Milestone[];
-}
-
-interface Milestone {
-  title: String;
-  date_created: String;
-  tasks?: Task[];
-}
-
-interface Task {
-  title: String;
-  date_created: String;
-}
 
 interface Props {
   children?: JSX.Element;
@@ -46,7 +30,6 @@ export default function ProjectDetails(props: Props) {
           );
         })}
       </div>
-      
     </>
   );
 }

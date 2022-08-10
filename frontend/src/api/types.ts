@@ -1,15 +1,23 @@
 export interface Task {
-  title: String;
+  title: string;
+  date_created?: string;
 }
 
 export interface Milestone {
-  title: String;
-  project_id: Number;
+  title: string;
+  date_created?: string;
+  id: number;
+  project_id: number | string;
   tasks?: Task[];
 }
 
 export interface Project {
-  id?: number;
+  id?: number | string;
   title?: string;
   milestones?: Milestone[];
+}
+
+export interface AllProjects {
+  username: string;
+  projects: Project[];
 }

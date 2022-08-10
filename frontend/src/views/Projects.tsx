@@ -2,34 +2,37 @@ import { DefaultLayout } from "../layouts/Default";
 import TabContainer, { Colors } from "../components/TabContainer";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import AllProjectsList from "../components/AllProjectsList";
-import ProjectDetails, { Project } from "../components/ProjectDetails";
+import ProjectDetails from "../components/ProjectDetails";
 import { useEffect, useState } from "react";
 import { authFetch, useAuth } from "../auth/AuthProvider";
+import { useApi } from "../api/api";
+import { Project } from "../api/types";
 
 function Projects() {
-  const [projects, setProjects] = useState([]);
+  const [projects, setProjects] = useState<Project[]>([]);
   const navigate = useNavigate();
   const [currentProject, setCurrentProject] = useState<Project>({});
   const [userTitle, setUserTitle] = useState("");
   const [logged, session] = useAuth();
+  console.log({ session });
+
+  const api = useApi(authFetch);
 
   useEffect(() => {
-    authFetch("http://127.0.0.1:5000/api/projects")
-      .then((response) => {
-        if (response.status === 401) {
-          setUserTitle("Please sign in to your account");
-          return null;
-        }
-        return response.json();
-      })
-      .then((response) => {
-        if (response) {
-          setProjects(response.projects);
-          setCurrentProject(response.projects[0]);
-          setUserTitle(response.username);
-          console.log(response);
-        }
-      });
+    const thing = async () => {
+      // const response = await authFetch("http://127.0.0.1:5000/api/projects");
+      const { data, response } = await api.getAllProjects();
+      if (response.status === 401) {
+        setUserTitle("Please sign in to your account");
+        return null;
+      } else {
+        setProjects(data.projects);
+        setCurrentProject(data.projects[0]);
+        setUserTitle(data.username);
+        console.log(data);
+      }
+    };
+    thing();
   }, []);
 
   const editProjectClick = (e: any) => {

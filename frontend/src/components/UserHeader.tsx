@@ -1,11 +1,15 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { logout, useAuth } from "../auth/AuthProvider";
-import { useContext } from "react";
-import {DataContext} from "../contexts/DataProvider"
 
 export default function UserHeader() {
   const [logged, session] = useAuth();
-  const {message} = useContext(DataContext)
+  const navigate = useNavigate();
+
+  const logoutHandler = (e: any) => {
+    e.preventDefault();
+    logout();
+    navigate("/login");
+  };
 
   return (
     <>
@@ -18,13 +22,15 @@ export default function UserHeader() {
               alt="logo of word 'canna'"
             />
             {logged ? (
-             <> <button
-                className=" bg-lightLavender p-2 rounded-full"
-                onClick={logout}
-              >
-                Sign Out
-              </button>
-            </>
+              <>
+                {" "}
+                <button
+                  className=" bg-lightLavender p-2 rounded-full"
+                  onClick={logoutHandler}
+                >
+                  Sign Out
+                </button>
+              </>
             ) : (
               <></>
             )}

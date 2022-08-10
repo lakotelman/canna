@@ -1,34 +1,37 @@
-import { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import MilestoneTaskInput from "./MilestoneTaskInput";
-import { DataContext } from "../contexts/DataProvider";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useApi } from "../api/api";
+import { authFetch } from "../auth/AuthProvider";
+import { Milestone } from "../api/types";
+import MilestoneTaskInputNew from "./MilestoneTaskInputNew";
 
-interface Milestone {
-  title: String;
-  date_created: String;
-  tasks?: Task[];
+interface Props {
+  projectId: string | number;
 }
 
-interface Task {
-  title: String;
-}
-
-export default function EditProjectDetails(props: any) {
-  const { api } = useContext(DataContext);
+export default function EditProjectDetails(props: Props) {
+  const api = useApi(authFetch);
   const navigate = useNavigate();
-  const [milestones, setMilestones] = useState<Milestone[]>([
-    {
+
+  function milestoneFactory() {
+    return {
+      id: -1,
+      project_id: props.projectId,
       title: "",
       date_created: "",
       tasks: [],
-    },
+    };
+  }
+
+  const [milestones, setMilestones] = useState<Milestone[]>([
+    milestoneFactory(),
   ]);
 
   function postDatafromForm(e: any) {
     e.preventDefault();
     const formData = new FormData(e.target);
     const formObject = Object.fromEntries(formData);
-    api.newProjPayload(formObject, parseInt(props.projectId));
+    api.newProjPayload(formObject, props.projectId);
     console.log(formObject);
     navigate("/projects");
   }
@@ -40,10 +43,7 @@ export default function EditProjectDetails(props: any) {
 
   function addMilestone(e: any) {
     e.preventDefault();
-    setMilestones([
-      ...milestones,
-      { title: "hmm", date_created: "huh", tasks: [] },
-    ]);
+    setMilestones([...milestones, milestoneFactory()]);
   }
 
   return (
@@ -68,7 +68,7 @@ export default function EditProjectDetails(props: any) {
         <div className="">
           {milestones.map((milestone, index) => {
             return (
-              <MilestoneTaskInput
+              <MilestoneTaskInputNew
                 id={index}
                 key={index}
                 name={index.toString()}

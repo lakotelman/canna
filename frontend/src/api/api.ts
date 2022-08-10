@@ -1,16 +1,26 @@
 import { Maybe } from "react-token-auth/lib/types";
 import { Session } from "../auth/AuthProvider";
-import { Milestone, Project, Task } from "./types";
+import { AllProjects, Milestone, Project, Task } from "./types";
 
 type Methods = "POST" | "GET" | "UPDATE" | "DELETE" | "PUT";
 
+export function useApi(requests: typeof fetch): Api {
+  return new Api("http://127.0.0.1:5000/api", requests);
+}
+
+export interface TResponse<T> {
+  data: T;
+  response: Response;
+  status: number;
+}
+
 export class Api {
   base: string;
-  session: Maybe<Session>;
+  requests: typeof fetch;
 
-  constructor(url: string, sess: Maybe<Session>) {
+  constructor(url: string, requests: typeof fetch) {
     this.base = url;
-    this.session = sess;
+    this.requests = requests;
   }
 
   /*
@@ -18,7 +28,7 @@ export class Api {
    * and submits it to the API endpoint after packaging it in a
    * JSON structured format with milestones and nested tasks.
    */
-  async newProjPayload(rawFormData: Object, projectId: Number) {
+  async newProjPayload(rawFormData: Object, projectId: number | string) {
     const projectPayload: Milestone[] = [];
 
     let milestoneTasks: Record<string, Task[]> = {};
@@ -62,20 +72,31 @@ export class Api {
     url: string,
     body?: object,
     headers?: Record<string, string>
-  ): Promise<T> {
-    const response = await fetch(`${this.base}${url}`, {
+  ): Promise<TResponse<T>> {
+    const response = await this.requests(`${this.base}${url}`, {
       method: method,
       body: JSON.stringify(body),
       headers: new Headers({
-        Authorization: `Bearer ${this.session?.access_token}`,
         ...headers,
       }),
     });
-    return response.json();
+
+    const data = await response.json();
+
+    return {
+      data: data,
+      response: response,
+      status: response.status,
+    };
   }
 
-  async getProjectById(id: number | string): Promise<Project> {
+  async getProjectById(id: number | string): Promise<TResponse<Project>> {
     const data = await this.doFetch<Project>("GET", `/projects/${id}`);
+    return data;
+  }
+
+  async getAllProjects(): Promise<TResponse<AllProjects>> {
+    const data = await this.doFetch<AllProjects>("GET", `/projects`);
     return data;
   }
 }
