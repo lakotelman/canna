@@ -129,7 +129,7 @@ function editProject() {
   return (
     <>
       <TabContainer color={Colors.lightLavender}>
-        <div className="w-5/6">
+        <div className="md:w-5/6">
           <h1 className="text-3xl">{project.title}</h1>
 
           <div className="my-4"></div>
@@ -153,7 +153,7 @@ function editProject() {
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 text-slate-400"
+                className="h-4 w-4 text-slate-400 "
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -167,7 +167,7 @@ function editProject() {
               </svg>
               <p className=" text-slate-400">milestone</p>
             </button>
-            <button className="bg-lightGreen p-2 rounded-full w-full">
+            <button className="bg-lightGreen p-1 rounded-full w-3/4 mx-auto">
               Save
             </button>
           </form>

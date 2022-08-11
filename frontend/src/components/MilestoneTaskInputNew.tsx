@@ -91,7 +91,7 @@ export default function MilestoneTaskInputNew(props: Props) {
 
   return (
     <div className=" border-2 border-gray p-3 m-3 flex">
-      <div className="w-11/12 border-r-2 p-2 content-center items-center">
+      <div className="md:w-11/12 w-[95%] border-r-2 p-2 content-center items-center">
         <div className="text-left">
           <label
             className="block text-gray-500 font-bold mb-1 md:mb-0 pr-4"
@@ -133,7 +133,7 @@ export default function MilestoneTaskInputNew(props: Props) {
                       <button onClick={(e) => moveTaskUp(e, i)} id="add">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="h-6 w-6"
+                          className="h-4 w-4 md:h-6 md:w-6"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
@@ -151,7 +151,7 @@ export default function MilestoneTaskInputNew(props: Props) {
                       <button onClick={(e) => moveTaskDown(e, i)}>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="h-6 w-6 "
+                          className="h-4 w-4 md:h-6 md:w-6 "
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
@@ -169,7 +169,7 @@ export default function MilestoneTaskInputNew(props: Props) {
                       <button onClick={(e) => removeTask(e, i)}>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="h-6 w-6"
+                          className="h-4 w-4 md:h-6 md:w-6"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"

@@ -13,11 +13,11 @@ export default function Task(props: Props){
 
     return (
       <>
-        <div className="flex">
+        <div className="flex items-start">
           <button onClick={props.updateTask} className="hover:text-lightGreen" value={props.task.id}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
+              className="h-6 w-6 mt-1"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -31,7 +31,7 @@ export default function Task(props: Props){
             </svg>
           </button>
           <li className={"px-1" + (props.task.status ? " line-through" : "")}>
-            {props.task.title}
+            <p className="py-0 my-0">{props.task.title}</p>
           </li>
         </div>
       </>

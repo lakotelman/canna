@@ -5,7 +5,7 @@ import TabContainer, {Colors} from "../components/TabContainer";
 function Visions(){ 
     return (
         <TabContainer color={Colors.lightGreen}>
-            <p>Howdy</p>
+            <p>Coming Soon!</p>
         </TabContainer>
       );
 }

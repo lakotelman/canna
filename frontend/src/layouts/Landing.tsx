@@ -8,8 +8,10 @@ interface Props {
 export function LandingLayout(props: Props){ 
     return(
         <>
-        <LandingHeader/>
-        {props.children}
+        <div className="bg-[url('/stacked-waves-haikei.svg')] bg-no-repeat bg-cover">
+            <LandingHeader/>
+            {props.children}
+        </div>
         </>
     )
 }

@@ -68,8 +68,9 @@ function Projects() {
                 setProject={setCurrentProject}
                 currentProject={currentProject}
               />
+              <hr className="md:hidden"/>
             </div>
-            <div>
+            <div className="mt-10 md:mt-0">
               <ProjectDetails
                 refresh={getProjectData}
                 all_projects={projects}
@@ -82,7 +83,9 @@ function Projects() {
                 Edit Project
               </button>
             </div>
-            <AddButton />
+           
+              <AddButton />
+           
           </>
         </TabContainer>
       ) : (
@@ -97,7 +100,6 @@ function Projects() {
           </>
         </TabContainer>
       )}
-      ;
     </>
   );
 }

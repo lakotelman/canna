@@ -70,7 +70,7 @@ function Register() {
     <>
       {!logged ? (
         <div className="flex items-center justify-center min-h-[75vh] bg-lightLavender">
-          <div className="px-8 py-6 mx-4 mt-4 text-left bg-white shadow-lg md:w-1/3 lg:w-1/3 sm:w-1/3">
+          <div className="px-8 py-6 mx-4 mt-4 my-6 text-left bg-white shadow-lg md:w-1/3 lg:w-1/3 sm:w-1/3">
             <div className="flex justify-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"

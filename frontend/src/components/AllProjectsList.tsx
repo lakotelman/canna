@@ -26,7 +26,7 @@ export default function AllProjectsList(props: Props) {
                 className={
                   "px-2 hover:cursor-pointer" +
                   (proj.id === props.currentProject.id
-                    ? " bg-lightGreen rounded-full"
+                    ? "  underline underline-offset-4 decoration-dotted md:no-underline decoration-standardGreen md:bg-lightGreen md:rounded-full"
                     : "")
                 }
               >
