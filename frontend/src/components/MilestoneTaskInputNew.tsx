@@ -1,13 +1,24 @@
-import { Milestone } from "../api/types";
+import { Milestone, Task } from "../api/types";
+import ProjectDetails from "./ProjectDetails";
 
 interface Props {
   milestone: Milestone;
-  moveMilestoneUp: (e:any)=> void,
-  moveMilestoneDown: (e:any) => void
+  moveMilestoneUp: (e: any) => void;
+  moveMilestoneDown: (e: any) => void;
   updateMilestone: (m: Milestone) => void;
+  removeMilestone: (e: any) => void;
 }
 
 export default function MilestoneTaskInputNew(props: Props) {
+  function taskFactory(): Task {
+    return {
+      id: -1,
+      milestone_id: props.milestone.id,
+      title: "",
+      date_created: "",
+    };
+  }
+
   function handleTitle(event: any) {
     props.updateMilestone({
       ...props.milestone,
@@ -15,17 +26,53 @@ export default function MilestoneTaskInputNew(props: Props) {
     });
   }
 
-  function handleTasks(event: any) {
-    let wholeString = event.target.value;
-    const result = wholeString.split(/\r?\n/);
-    let newTasks = [];
-    for (let str in result) {
-    }
+  function handleTasks(event: any, idx: number) {
+    props.milestone.tasks![idx] = {
+      ...props.milestone.tasks![idx],
+      title: event.target.value,
+    };
     props.updateMilestone({
       ...props.milestone,
-      tasks: result,
     });
   }
+  function addTask(event: any) {
+    if (!props.milestone.tasks) {
+      props.milestone.tasks = [];
+    }
+    props.milestone.tasks.push(taskFactory());
+    props.updateMilestone({
+      ...props.milestone,
+    });
+  }
+  function moveTaskUp(event: any, idx: number) {
+    if (!props.milestone.tasks) {
+      props.milestone.tasks = [];
+    }
+    if (idx != 0) {
+      let task = props.milestone.tasks[idx];
+      props.milestone.tasks.splice(idx, 1);
+      let newIdx = idx - 1;
+      props.milestone.tasks.splice(newIdx, 0, task);
+      props.updateMilestone({
+        ...props.milestone,
+      });
+    }
+  }
+  function moveTaskDown(event: any, idx: number) {
+    if (!props.milestone.tasks) {
+      props.milestone.tasks = [];
+    }
+    if (idx != props.milestone.tasks.length - 1) {
+      let task = props.milestone.tasks[idx];
+      props.milestone.tasks.splice(idx, 1);
+      let newIdx = idx + 1;
+      props.milestone.tasks.splice(newIdx, 0, task);
+      props.updateMilestone({
+        ...props.milestone,
+      });
+    }
+  }
+  function removeTask(event: any, idx: number) {}
 
   return (
     <div className=" border-2 border-gray p-3 m-3 flex">
@@ -55,49 +102,50 @@ export default function MilestoneTaskInputNew(props: Props) {
           </label>
 
           <div className="">
-            {props.milestone.tasks?.map((task) => {
+            {props.milestone.tasks?.map((task, i) => {
               return (
-                <>
-                  <div className="flex items-center align-middle">
+        
+                  <div key={i} className="flex items-center align-middle">
                     <input
-                      onChange={handleTasks}
+                      onChange={(e) => handleTasks(e, i)}
                       value={task.title}
                       className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 mb-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-lightPink"
                       id={"Task " + props.milestone.id}
                       name={"tasks" + props.milestone.id.toString()}
                     />
+                    {/* BUTTONS */}
                     <div className=" flex p-2">
                       <div>
-                        <button id="add">
+                        <button onClick={(e) => moveTaskUp(e, i)} id="add">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="h-6 w-6"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
-                            stroke-width="2"
+                            strokeWidth="2"
                           >
                             <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
                               d="M5 11l7-7 7 7M5 19l7-7 7 7"
                             />
                           </svg>
                         </button>
                       </div>
                       <div>
-                        <button>
+                        <button onClick={(e) => moveTaskDown(e, i)}>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="h-6 w-6 "
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
-                            stroke-width="2"
+                            strokeWidth="2"
                           >
                             <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
                               d="M19 13l-7 7-7-7m14-8l-7 7-7-7"
                             />
                           </svg>
@@ -111,11 +159,11 @@ export default function MilestoneTaskInputNew(props: Props) {
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
-                            stroke-width="2"
+                            strokeWidth="2"
                           >
                             <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
                               d="M6 18L18 6M6 6l12 12"
                             />
                           </svg>
@@ -123,11 +171,30 @@ export default function MilestoneTaskInputNew(props: Props) {
                       </div>
                     </div>
                   </div>
-                </>
+        
               );
             })}
           </div>
         </div>
+        <button
+          onClick={addTask}
+          className=" p-1 border-dashed border border-slate-400 w-full rounded-md"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6 mx-auto"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 4v16m8-8H4"
+            />
+          </svg>
+        </button>
       </div>
 
       <div className="mx-auto flex flex-col p-2 justify-around">
@@ -139,11 +206,11 @@ export default function MilestoneTaskInputNew(props: Props) {
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              stroke-width="2"
+              strokeWidth="2"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 d="M5 11l7-7 7 7M5 19l7-7 7 7"
               />
             </svg>
@@ -157,29 +224,29 @@ export default function MilestoneTaskInputNew(props: Props) {
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              stroke-width="2"
+              strokeWidth="2"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 d="M19 13l-7 7-7-7m14-8l-7 7-7-7"
               />
             </svg>
           </button>
         </div>
         <div>
-          <button>
+          <button onClick={props.removeMilestone}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              stroke-width="2"
+              strokeWidth="2"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 d="M6 18L18 6M6 6l12 12"
               />
             </svg>

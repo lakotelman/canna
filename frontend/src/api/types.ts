@@ -1,5 +1,7 @@
 export interface Task {
+  id?: number;
   title: string;
+  milestone_id?: number;
   date_created?: string;
 }
 

@@ -47,6 +47,12 @@ function editProject() {
     project.milestones.push(milestoneFactory());
     setProject({ ...project });
   }
+  
+  function removeMilestone(e: any, idx: number) {
+    let newList = project.milestones?.splice(idx, 1);
+    project.milestones = newList;
+    setProject({ ...project });
+  }
 
   function moveMilestoneDown(e: any, idx: number) {
     if (!project.milestones) {
@@ -72,7 +78,7 @@ function editProject() {
       let milestone = project.milestones[idx];
       project.milestones.splice(idx, 1);
       let newIdx = idx - 1;
-      let newOrder = project.milestones.splice(newIdx, 0, milestone);
+      project.milestones.splice(newIdx, 0, milestone);
       setProject({ ...project });
     } else {
       return;
@@ -111,11 +117,14 @@ function editProject() {
                   <MilestoneTaskInputNew
                     moveMilestoneUp={(e) => moveMilestoneUp(e, i)}
                     moveMilestoneDown={(e) => moveMilestoneDown(e, i)}
+                    removeMilestone={(e) => removeMilestone(e, i)}
                     milestone={m}
                     updateMilestone={(newm) => updateMilestone(i, newm)}
+                    key = {i}
                   />
                 );
               })}
+              <button className="bg-lightGreen p-2 rounded-full w-full">Save</button>
           </form>
         </div>
       </TabContainer>
