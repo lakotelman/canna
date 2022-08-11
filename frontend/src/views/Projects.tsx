@@ -18,20 +18,34 @@ function Projects() {
 
   const api = useApi(authFetch);
 
-  useEffect(() => {
-    const thing = async () => {
-      // const response = await authFetch("http://127.0.0.1:5000/api/projects");
-      const { data, response } = await api.getAllProjects();
-      if (response.status === 401) {
-        setUserTitle("Please sign in to your account");
-        return null;
-      } else {
-        setProjects(data.projects);
-        setCurrentProject(data.projects[0]);
-        setUserTitle(data.username);
+  const getProjectData = async () => {
+    // const response = await authFetch("http://127.0.0.1:5000/api/projects");
+    const { data, response } = await api.getAllProjects();
+    if (response.status === 401) {
+      setUserTitle("Please sign in to your account");
+      return null;
+    } else {
+      setProjects(data.projects);
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("id")) {
+        let projectFound = false
+        for (let proj of data.projects){
+          if (proj.id == params.get("id")) {
+            projectFound = true
+            setCurrentProject(proj);
+          }}
+        if(!projectFound){ 
+          setCurrentProject(data.projects[0])
+        }
       }
-    };
-    thing();
+      else{
+        setCurrentProject(data.projects[0])
+      }
+      setUserTitle(data.username);
+    }
+  };
+  useEffect(() => {
+    getProjectData();
   }, []);
 
   const editProjectClick = (e: any) => {
@@ -56,7 +70,11 @@ function Projects() {
               />
             </div>
             <div>
-              <ProjectDetails project={currentProject} />
+              <ProjectDetails
+                refresh={getProjectData}
+                all_projects={projects}
+                project={currentProject}
+              />
               <button
                 onClick={editProjectClick}
                 className="bg-lightLavender p-2 rounded-full hover:bg-lightPink"
@@ -64,7 +82,7 @@ function Projects() {
                 Edit Project
               </button>
             </div>
-            <AddButton/>
+            <AddButton />
           </>
         </TabContainer>
       ) : (

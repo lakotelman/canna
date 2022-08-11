@@ -99,7 +99,7 @@ def add_project():
 @flask_praetorian.auth_required
 def new_project_details():
     req = flask.request.get_json(force=True)
-    print(req)
+    print(req) 
     m = Milestone(
         title=req["title"],
         project_id=req["project_id"],
@@ -115,6 +115,18 @@ def new_project_details():
     return req
 
 
+@app.route("/api/updatestatus/<id>", methods=["PUT"])
+@flask_praetorian.auth_required
+def update_status(id):
+    task = Task.query.filter_by(id=id).first()
+    if task.status == True:
+        task.status = False
+    else:
+        task.status = True
+    db.session.commit()
+    return {"message": "The task status was updated"}
+
+
 @app.route("api/projectrevise", methods=["PUT"])
 @flask_praetorian.auth_required
 def update_milestone_details():
@@ -126,7 +138,7 @@ def update_milestone_details():
     db.session.commit()
     for task in req["tasks"]:
         if task["id"] != -1:
-            db_task = Task.filter_by(id=task["id"]).first()
+            db_task = Task.query.filter_by(id=task["id"]).first()
             db_task.title = task["title"]
             db.session.commit()
         else:
@@ -155,18 +167,20 @@ def delete_project_by_id(id):
     db.session.commit()
     return {"Message": "Project was successfully deleted"}
 
+
 @app.route("/api/project/milestone/<id>/delete", methods=["DELETE"])
 @flask_praetorian.auth_required
-def delete_milestone_by_id(id): 
-    response = Milestone.query.filter_by(id = id).first()
-    db.session.delete(response) 
+def delete_milestone_by_id(id):
+    response = Milestone.query.filter_by(id=id).first()
+    db.session.delete(response)
     db.session.commit()
     return {"Message": "Milestone was removed from the database"}
 
+
 @app.route("/api/project/task/<id>/delete", methods=["DELETE"])
 @flask_praetorian.auth_required
-def delete_task_by_id(id): 
-    response = Task.query.filter_by(id = id).first()
-    db.session.delete(response) 
+def delete_task_by_id(id):
+    response = Task.query.filter_by(id=id).first()
+    db.session.delete(response)
     db.session.commit()
     return {"Message": "Task was removed from the database"}

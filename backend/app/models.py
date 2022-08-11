@@ -78,7 +78,10 @@ class Project(db.Model):
     status = db.Column(db.Boolean, default=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     milestones = db.relationship(
-        "Milestone", backref="projects", lazy=True, cascade="all,delete"
+        "Milestone",
+        backref="projects",
+        lazy=True,
+        cascade="all,delete",
     )
 
     def __repr__(self):
@@ -99,9 +102,14 @@ class Milestone(db.Model):
     title = db.Column(db.String(50), nullable=False)
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     status = db.Column(db.Boolean, default=False)
+    # order = db.Column(db.Integer, default=0)
     project_id = db.Column(db.Integer, db.ForeignKey("project.id"), nullable=False)
     tasks = db.relationship(
-        "Task", backref="milestones", lazy=True, cascade="all, delete"
+        "Task",
+        backref="milestones",
+        lazy=True,
+        cascade="all, delete",
+        
     )
 
     def milestone_dict(self):
@@ -118,6 +126,7 @@ class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50), nullable=False)
     status = db.Column(db.Boolean, default=False)
+    # order = db.Column(db.Integer, default=0)
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     milestone_id = db.Column(db.Integer, db.ForeignKey("milestone.id"), nullable=False)
 
@@ -127,4 +136,5 @@ class Task(db.Model):
             "title": self.title,
             "date_created": self.date_created,
             "milestone_id": self.milestone_id,
+            "status": self.status,
         }

@@ -5,7 +5,7 @@ import { AllProjects, Milestone, Project, Task } from "./types";
 type Methods = "POST" | "GET" | "UPDATE" | "DELETE" | "PUT";
 
 export function useApi(requests: typeof fetch): Api {
-  return new Api("http://127.0.0.1:5000/api", requests);
+  return new Api("/api", requests);
 }
 
 export interface TResponse<T> {
@@ -42,6 +42,13 @@ export class Api {
         milestoneData
       );
     }
+  }
+
+  async updateStatus(task_id: number) {
+    const data = await this.doFetch<Task>(
+      "PUT",
+      `/updatestatus/${task_id}`
+    );
   }
 
   async doFetch<T>(
@@ -90,7 +97,7 @@ export class Api {
       "DELETE",
       `/project/milestone/${id}/delete`
     );
-    console.log(data)
+    console.log(data);
     return data;
   }
 
@@ -99,8 +106,7 @@ export class Api {
       "DELETE",
       `/project/task/${id}/delete`
     );
-    console.log(data)
+    console.log(data);
     return data;
   }
-
 }
