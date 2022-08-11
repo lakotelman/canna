@@ -121,12 +121,12 @@ def update_milestone_details():
     req = flask.request.get_json(force=True)
     if "id" not in req:
         return {"Error": "Bad request", "message": "Need an id to update"}
-    milestone = Milestone.query.filter_by(id=req["id"]).first_or_404()
+    milestone = Milestone.query.filter_by(id=req["id"]).first()
     milestone.title = req["title"]
     db.session.commit()
     for task in req["tasks"]:
         if task["id"] != -1:
-            db_task = Task.filter_by(id=task["id"]).first_or_404()
+            db_task = Task.filter_by(id=task["id"]).first()
             db_task.title = task["title"]
             db.session.commit()
         else:
@@ -154,3 +154,19 @@ def delete_project_by_id(id):
     db.session.delete(response)
     db.session.commit()
     return {"Message": "Project was successfully deleted"}
+
+@app.route("/api/project/milestone/<id>/delete", methods=["DELETE"])
+@flask_praetorian.auth_required
+def delete_milestone_by_id(id): 
+    response = Milestone.query.filter_by(id = id).first()
+    db.session.delete(response) 
+    db.session.commit()
+    return {"Message": "Milestone was removed from the database"}
+
+@app.route("/api/project/task/<id>/delete", methods=["DELETE"])
+@flask_praetorian.auth_required
+def delete_task_by_id(id): 
+    response = Task.query.filter_by(id = id).first()
+    db.session.delete(response) 
+    db.session.commit()
+    return {"Message": "Task was removed from the database"}

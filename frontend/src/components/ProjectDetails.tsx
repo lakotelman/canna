@@ -15,13 +15,10 @@ export default function ProjectDetails(props: Props) {
         {props.project?.milestones?.map((milestone, index) => {
           return (
             <div key={index}>
-              <h3
-                
-                className="bg-lightGreen mb-4 rounded-r-full px-3"
-              >
+              <h3 className="bg-lightGreen mb-4 rounded-r-full px-3">
                 {milestone.title}
               </h3>
-              <ul className="list-disc list-inside mb-4 mx-4">
+              <ul className="list-inside mb-4 mx-4 text-left">
                 {milestone.tasks?.map((task, index) => {
                   return <Task key={index} task={task} />;
                 })}

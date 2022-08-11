@@ -1,4 +1,7 @@
+import { Api } from "../api";
+import { useApi } from "../api/api";
 import { Milestone, Task } from "../api/types";
+import { authFetch } from "../auth/AuthProvider";
 import ProjectDetails from "./ProjectDetails";
 
 interface Props {
@@ -10,6 +13,7 @@ interface Props {
 }
 
 export default function MilestoneTaskInputNew(props: Props) {
+  const api = useApi(authFetch)
   function taskFactory(): Task {
     return {
       id: -1,
@@ -77,6 +81,10 @@ export default function MilestoneTaskInputNew(props: Props) {
   }
   function removeTask(event: any, idx: number) {
     event.preventDefault();
+    if(props.milestone.tasks && props.milestone.tasks[idx].id != -1){
+     let task_id = props.milestone.tasks[idx].id
+      api.deleteTask(task_id!) 
+    }
     props.milestone.tasks?.splice(idx, 1);
     props.updateMilestone({ ...props.milestone });
   }
@@ -183,11 +191,11 @@ export default function MilestoneTaskInputNew(props: Props) {
         </div>
         <button
           onClick={addTask}
-          className=" p-1 border-dashed border border-slate-400 w-full rounded-md"
+          className=" flex items-center justify-center p-1 border-dashed border border-lightLavender w-full rounded-md"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 mx-auto"
+            className="h-4 w-4 text-slate-400 "
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -198,7 +206,7 @@ export default function MilestoneTaskInputNew(props: Props) {
               strokeLinejoin="round"
               d="M12 4v16m8-8H4"
             />
-          </svg>
+          </svg> <p className="text-sm text-slate-400"> task</p>
         </button>
       </div>
 

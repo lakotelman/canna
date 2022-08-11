@@ -35,7 +35,6 @@ export class Api {
         "/newprojectmilestones",
         milestoneData
       );
-      console.log(data);
     } else {
       const data = await this.doFetch<Milestone[]>(
         "PUT",
@@ -83,7 +82,25 @@ export class Api {
       "DELETE",
       `/project/${id}/delete`
     );
+    return data;
+  }
+
+  async deleteMilestone(id: number | string): Promise<TResponse<AllProjects>> {
+    const data = await this.doFetch<AllProjects>(
+      "DELETE",
+      `/project/milestone/${id}/delete`
+    );
     console.log(data)
     return data;
   }
+
+  async deleteTask(id: number | string): Promise<TResponse<AllProjects>> {
+    const data = await this.doFetch<AllProjects>(
+      "DELETE",
+      `/project/task/${id}/delete`
+    );
+    console.log(data)
+    return data;
+  }
+
 }

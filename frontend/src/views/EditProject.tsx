@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useApi } from "../api/api";
 import { Milestone, Project } from "../api/types";
 import { authFetch } from "../auth/AuthProvider";
 import MilestoneTaskInputNew from "../components/MilestoneTaskInputNew";
-import ProjectDetails from "../components/ProjectDetails";
 import TabContainer, { Colors } from "../components/TabContainer";
 import { DefaultLayout } from "../layouts/Default";
 
 function editProject() {
   const api = useApi(authFetch);
   let { projectId } = useParams();
+  const navigate = useNavigate();
   let [project, setProject] = useState<Project>({});
 
   function milestoneFactory(): Milestone {
@@ -24,6 +24,7 @@ function editProject() {
   }
 
   useEffect(() => {
+    setProject(project);
     const thing = async () => {
       const { response, data } = await api.getProjectById(projectId!);
       if (response) {
@@ -42,6 +43,7 @@ function editProject() {
       console.log(milestone);
       api.newProjPayload(milestone, project.id!);
     }
+    navigate("/projects");
   }
   function deleteProject(e: any, projId: string | number) {
     e.preventDefault();
@@ -50,6 +52,7 @@ function editProject() {
     );
     if (confirmBox === true) {
       api.deleteProject(projectId!);
+      navigate("/projects");
     }
   }
 
@@ -57,6 +60,7 @@ function editProject() {
   // =============================
 
   function addMilestone(e: any) {
+    e.preventDefault();
     if (!project.milestones) {
       project.milestones = [];
     }
@@ -66,8 +70,11 @@ function editProject() {
 
   function removeMilestone(e: any, idx: number) {
     e.preventDefault();
-    let newList = project.milestones?.splice(idx, 1);
-    project.milestones = newList;
+    if (project.milestones && project.milestones[idx].id != -1) {
+      let milestone_id = project.milestones[idx].id;
+      api.deleteMilestone(milestone_id);
+    }
+    project.milestones?.splice(idx, 1);
     setProject({ ...project });
   }
 
@@ -122,12 +129,7 @@ function editProject() {
       <TabContainer color={Colors.lightLavender}>
         <div className="w-5/6">
           <h1 className="text-3xl">{project.title}</h1>
-          <button
-            onClick={addMilestone}
-            className="bg-lightOrange p-2 rounded-full"
-          >
-            Add Milestone
-          </button>
+
           <div className="my-4"></div>
           <form onSubmit={submitForm} className="">
             {project.milestones &&
@@ -143,6 +145,26 @@ function editProject() {
                   />
                 );
               })}
+            <button
+              onClick={addMilestone}
+              className=" flex justify-center items-center border-dashed border-lightLavender w-full border p-1 text-sm my-2 rounded-md"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4 text-slate-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 4v16m8-8H4"
+                />
+              </svg>
+              <p className=" text-slate-400">milestone</p>
+            </button>
             <button className="bg-lightGreen p-2 rounded-full w-full">
               Save
             </button>
