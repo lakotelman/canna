@@ -77,18 +77,20 @@ class Project(db.Model):
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     status = db.Column(db.Boolean, default=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-    milestones = db.relationship("Milestone", backref="projects", lazy=True)
+    milestones = db.relationship(
+        "Milestone", backref="projects", lazy=True, cascade="all,delete"
+    )
 
     def __repr__(self):
         return f"Project({self.title}, {self.date_created}"
 
     def project_dict(self):
-        return { 
+        return {
             "id": self.id,
-            "title":self.title,
-            "date_created":  self.date_created,
+            "title": self.title,
+            "date_created": self.date_created,
             "user_id": self.user_id,
-            "milestones": [m.milestone_dict() for m in self.milestones]
+            "milestones": [m.milestone_dict() for m in self.milestones],
         }
 
 
@@ -98,29 +100,31 @@ class Milestone(db.Model):
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     status = db.Column(db.Boolean, default=False)
     project_id = db.Column(db.Integer, db.ForeignKey("project.id"), nullable=False)
-    tasks = db.relationship("Task", backref="milestones", lazy=True)
+    tasks = db.relationship(
+        "Task", backref="milestones", lazy=True, cascade="all, delete"
+    )
 
     def milestone_dict(self):
-        return { 
+        return {
             "id": self.id,
-            "title":self.title,
-            "date_created":  self.date_created,
+            "title": self.title,
+            "date_created": self.date_created,
             "project_id": self.project_id,
-            "tasks": [t.task_dict() for t in self.tasks]
+            "tasks": [t.task_dict() for t in self.tasks],
         }
 
 
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50), nullable=False)
-    status = db.Column(db.Boolean, default = False)
+    status = db.Column(db.Boolean, default=False)
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     milestone_id = db.Column(db.Integer, db.ForeignKey("milestone.id"), nullable=False)
 
     def task_dict(self):
-        return { 
+        return {
             "id": self.id,
-            "title":self.title,
-            "date_created":  self.date_created,
-            "milestone_id": self.milestone_id
+            "title": self.title,
+            "date_created": self.date_created,
+            "milestone_id": self.milestone_id,
         }

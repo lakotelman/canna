@@ -129,10 +129,10 @@ def update_milestone_details():
             db_task = Task.filter_by(id=task["id"]).first_or_404()
             db_task.title = task["title"]
             db.session.commit()
-        else: 
+        else:
             n_task = Task(
-                title = task["title"], 
-                milestone_id = milestone.id, 
+                title=task["title"],
+                milestone_id=milestone.id,
             )
             db.session.add(n_task)
             db.session.commit()
@@ -149,5 +149,8 @@ def get_project_by_id(id):
 
 @app.route("/api/project/<id>/delete", methods=["DELETE"])
 @flask_praetorian.auth_required
-def delete_project_by_id(id): 
-    return({"message": "this endpoint is working"})
+def delete_project_by_id(id):
+    response = Project.query.filter_by(id=id).first()
+    db.session.delete(response)
+    db.session.commit()
+    return {"Message": "Project was successfully deleted"}
