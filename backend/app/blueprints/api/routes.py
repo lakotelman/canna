@@ -99,17 +99,14 @@ def add_project():
 @flask_praetorian.auth_required
 def new_project_details():
     req = flask.request.get_json(force=True)
-    print(req) 
-    m = Milestone(
-        title=req["title"],
-        project_id=req["project_id"],
-    )
+    print(req)
+    m = Milestone(title=req["title"], project_id=req["project_id"], order=req["order"])
     db.session.add(m)
     db.session.commit()
     db.session.refresh(m)
-    for task in req["tasks"]:
+    for index, task in enumerate(req["tasks"]):
         if task["id"] == -1:
-            t = Task(title=task["title"], milestone_id=m.id)
+            t = Task(title=task["title"], milestone_id=m.id, order=index)
             db.session.add(t)
             db.session.commit()
     return req
@@ -135,17 +132,16 @@ def update_milestone_details():
         return {"Error": "Bad request", "message": "Need an id to update"}
     milestone = Milestone.query.filter_by(id=req["id"]).first()
     milestone.title = req["title"]
+    milestone.order = req["order"]
     db.session.commit()
-    for task in req["tasks"]:
+    for index, task in enumerate(req["tasks"]):
         if task["id"] != -1:
             db_task = Task.query.filter_by(id=task["id"]).first()
             db_task.title = task["title"]
+            db_task.order = index
             db.session.commit()
         else:
-            n_task = Task(
-                title=task["title"],
-                milestone_id=milestone.id,
-            )
+            n_task = Task(title=task["title"], milestone_id=milestone.id, order=index)
             db.session.add(n_task)
             db.session.commit()
     return {"Message": f"Updated {milestone}"}

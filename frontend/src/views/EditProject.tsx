@@ -39,8 +39,10 @@ function editProject() {
     if (!project.milestones) {
       return;
     }
+    let i = 0 
     for (let milestone of project.milestones) {
-      console.log(milestone);
+      milestone.order = i
+      i++
       api.newProjPayload(milestone, project.id!);
     }
     navigate("/projects");

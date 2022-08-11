@@ -82,6 +82,7 @@ class Project(db.Model):
         backref="projects",
         lazy=True,
         cascade="all,delete",
+        order_by= "Milestone.order"
     )
 
     def __repr__(self):
@@ -102,13 +103,14 @@ class Milestone(db.Model):
     title = db.Column(db.String(50), nullable=False)
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     status = db.Column(db.Boolean, default=False)
-    # order = db.Column(db.Integer, default=0)
+    order = db.Column(db.Integer, default=0)
     project_id = db.Column(db.Integer, db.ForeignKey("project.id"), nullable=False)
     tasks = db.relationship(
         "Task",
         backref="milestones",
         lazy=True,
         cascade="all, delete",
+        order_by="Task.order"
         
     )
 
@@ -126,7 +128,7 @@ class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50), nullable=False)
     status = db.Column(db.Boolean, default=False)
-    # order = db.Column(db.Integer, default=0)
+    order = db.Column(db.Integer, default=0)
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     milestone_id = db.Column(db.Integer, db.ForeignKey("milestone.id"), nullable=False)
 
