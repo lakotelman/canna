@@ -75,6 +75,7 @@ class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50), nullable=False)
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    status = db.Column(db.Boolean, default=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     milestones = db.relationship("Milestone", backref="projects", lazy=True)
 
@@ -95,6 +96,7 @@ class Milestone(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50), nullable=False)
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    status = db.Column(db.Boolean, default=False)
     project_id = db.Column(db.Integer, db.ForeignKey("project.id"), nullable=False)
     tasks = db.relationship("Task", backref="milestones", lazy=True)
 
@@ -111,6 +113,7 @@ class Milestone(db.Model):
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50), nullable=False)
+    status = db.Column(db.Boolean, default = False)
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     milestone_id = db.Column(db.Integer, db.ForeignKey("milestone.id"), nullable=False)
 

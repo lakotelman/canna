@@ -11,7 +11,7 @@ export enum Colors {
 interface Props {
   color: Colors;
   children?: JSX.Element;
-  button?: Boolean
+  addbutton?: JSX.Element 
 }
 
 export default function TabContainer(props: Props) {
@@ -27,13 +27,10 @@ export default function TabContainer(props: Props) {
             "bg-lightOrange": props.color === Colors.lightOrange,
           })}
         >
-          <div className=" bg-white mx-auto my-4 h-[95%] w-[95%] p-16 rounded-3xl outline-white outline-3 outline-dotted outline-offset-4 relative overflow-scroll">
+          <div className=" bg-white mx-auto my-4 h-[95%] w-[95%] p-16 rounded-3xl outline-white outline-3 outline-dotted outline-offset-4 relative overflow-auto">
 
             <div className="flex justify-center gap-32 align-top divide-x-2">
               {props.children}
-            </div>
-            <div className="">
-              <AddButton destination="/projects/add" />
             </div>
           </div>
         </div>

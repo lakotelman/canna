@@ -14,9 +14,9 @@ export default function ProjectDetails(props: Props) {
         <hr />
         {props.project?.milestones?.map((milestone, index) => {
           return (
-            <>
+            <div key={index}>
               <h3
-                key={index}
+                
                 className="bg-lightGreen mb-4 rounded-r-full px-3"
               >
                 {milestone.title}
@@ -26,7 +26,7 @@ export default function ProjectDetails(props: Props) {
                   return <Task key={index} task={task} />;
                 })}
               </ul>
-            </>
+            </div>
           );
         })}
       </div>

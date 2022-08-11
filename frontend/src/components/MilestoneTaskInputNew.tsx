@@ -36,6 +36,7 @@ export default function MilestoneTaskInputNew(props: Props) {
     });
   }
   function addTask(event: any) {
+    event.preventDefault();
     if (!props.milestone.tasks) {
       props.milestone.tasks = [];
     }
@@ -45,6 +46,7 @@ export default function MilestoneTaskInputNew(props: Props) {
     });
   }
   function moveTaskUp(event: any, idx: number) {
+    event.preventDefault();
     if (!props.milestone.tasks) {
       props.milestone.tasks = [];
     }
@@ -59,6 +61,7 @@ export default function MilestoneTaskInputNew(props: Props) {
     }
   }
   function moveTaskDown(event: any, idx: number) {
+    event.preventDefault();
     if (!props.milestone.tasks) {
       props.milestone.tasks = [];
     }
@@ -72,7 +75,11 @@ export default function MilestoneTaskInputNew(props: Props) {
       });
     }
   }
-  function removeTask(event: any, idx: number) {}
+  function removeTask(event: any, idx: number) {
+    event.preventDefault();
+    props.milestone.tasks?.splice(idx, 1);
+    props.updateMilestone({ ...props.milestone });
+  }
 
   return (
     <div className=" border-2 border-gray p-3 m-3 flex">
@@ -104,74 +111,72 @@ export default function MilestoneTaskInputNew(props: Props) {
           <div className="">
             {props.milestone.tasks?.map((task, i) => {
               return (
-        
-                  <div key={i} className="flex items-center align-middle">
-                    <input
-                      onChange={(e) => handleTasks(e, i)}
-                      value={task.title}
-                      className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 mb-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-lightPink"
-                      id={"Task " + props.milestone.id}
-                      name={"tasks" + props.milestone.id.toString()}
-                    />
-                    {/* BUTTONS */}
-                    <div className=" flex p-2">
-                      <div>
-                        <button onClick={(e) => moveTaskUp(e, i)} id="add">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-6 w-6"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M5 11l7-7 7 7M5 19l7-7 7 7"
-                            />
-                          </svg>
-                        </button>
-                      </div>
-                      <div>
-                        <button onClick={(e) => moveTaskDown(e, i)}>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-6 w-6 "
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M19 13l-7 7-7-7m14-8l-7 7-7-7"
-                            />
-                          </svg>
-                        </button>
-                      </div>
-                      <div>
-                        <button>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-6 w-6"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M6 18L18 6M6 6l12 12"
-                            />
-                          </svg>
-                        </button>
-                      </div>
+                <div key={i} className="flex items-center align-middle">
+                  <input
+                    onChange={(e) => handleTasks(e, i)}
+                    value={task.title}
+                    className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 mb-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-lightPink"
+                    id={"Task " + props.milestone.id}
+                    name={"tasks" + props.milestone.id.toString()}
+                  />
+                  {/* BUTTONS */}
+                  <div className=" flex p-2">
+                    <div>
+                      <button onClick={(e) => moveTaskUp(e, i)} id="add">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-6 w-6"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M5 11l7-7 7 7M5 19l7-7 7 7"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                    <div>
+                      <button onClick={(e) => moveTaskDown(e, i)}>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-6 w-6 "
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M19 13l-7 7-7-7m14-8l-7 7-7-7"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                    <div>
+                      <button onClick={(e) => removeTask(e, i)}>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-6 w-6"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </button>
                     </div>
                   </div>
-        
+                </div>
               );
             })}
           </div>

@@ -95,33 +95,59 @@ def add_project():
         return "You broke it."
 
 
-@app.route("/api/newprojectdetails", methods=["POST"])
+@app.route("/api/newprojectmilestones", methods=["POST"])
 @flask_praetorian.auth_required
 def new_project_details():
     req = flask.request.get_json(force=True)
-    for milestone in req: 
-        print(milestone)
-        m = Milestone(
-            title = milestone["title"], 
-            project_id = milestone["project_id"], 
-        )
-        db.session.add(m)
-        db.session.commit()
-        db.session.refresh(m)
-        for task in milestone["tasks"]: 
-            t = Task( 
-                title= task["title"], 
-                milestone_id = m.id
-            )
+    print(req)
+    m = Milestone(
+        title=req["title"],
+        project_id=req["project_id"],
+    )
+    db.session.add(m)
+    db.session.commit()
+    db.session.refresh(m)
+    for task in req["tasks"]:
+        if task["id"] == -1:
+            t = Task(title=task["title"], milestone_id=m.id)
             db.session.add(t)
             db.session.commit()
+    return req
 
-    return (req)
 
-
-@app.route("/api/projects/<id>", methods = ["GET"])
+@app.route("api/projectrevise", methods=["PUT"])
 @flask_praetorian.auth_required
-def get_project_by_id(id): 
+def update_milestone_details():
+    req = flask.request.get_json(force=True)
+    if "id" not in req:
+        return {"Error": "Bad request", "message": "Need an id to update"}
+    milestone = Milestone.query.filter_by(id=req["id"]).first_or_404()
+    milestone.title = req["title"]
+    db.session.commit()
+    for task in req["tasks"]:
+        if task["id"] != -1:
+            db_task = Task.filter_by(id=task["id"]).first_or_404()
+            db_task.title = task["title"]
+            db.session.commit()
+        else: 
+            n_task = Task(
+                title = task["title"], 
+                milestone_id = milestone.id, 
+            )
+            db.session.add(n_task)
+            db.session.commit()
+    return {"Message": f"Updated {milestone}"}
+
+
+@app.route("/api/projects/<id>", methods=["GET"])
+@flask_praetorian.auth_required
+def get_project_by_id(id):
     response = Project.query.filter_by(id=id).first()
     project = response.project_dict()
     return project
+
+
+@app.route("/api/project/<id>/delete", methods=["DELETE"])
+@flask_praetorian.auth_required
+def delete_project_by_id(id): 
+    return({"message": "this endpoint is working"})

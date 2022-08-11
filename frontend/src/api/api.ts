@@ -28,43 +28,21 @@ export class Api {
    * and submits it to the API endpoint after packaging it in a
    * JSON structured format with milestones and nested tasks.
    */
-  // async newProjPayload(rawFormData: Object, projectId: number | string) {
-  //   const projectPayload: Milestone[] = [];
-
-  //   let milestoneTasks: Record<string, Task[]> = {};
-  //   for (const [key, value] of Object.entries(rawFormData)) {
-  //     let milestoneIndex = key.replace(/\D/g, "");
-
-  //     if (!milestoneTasks[milestoneIndex]) {
-  //       milestoneTasks[milestoneIndex] = [];
-  //     }
-
-  //     if (key.includes("tasks") && key.includes(milestoneIndex)) {
-  //       let stringTasks = value.split(/\r?\n/);
-  //       for (let task of stringTasks) {
-  //         let t1 = {
-  //           title: task,
-  //         };
-  //         milestoneTasks[milestoneIndex].push(t1);
-  //       }
-  //     }
-  //     if (key.includes("milestone")) {
-  //       const milestone = value;
-  //       let milestoneObj = {
-  //         title: milestone,
-  //         project_id: projectId,
-  //         tasks: milestoneTasks[milestoneIndex],
-  //       };
-  //       projectPayload.push(milestoneObj);
-  //     }
-  //   }
-    const data = await this.doFetch<Milestone[]>(
-      "POST",
-      "/newprojectdetails",
-      projectPayload
-    );
-
-    console.log(data);
+  async newProjPayload(milestoneData: Milestone, projectId: number | string) {
+    if (milestoneData.id == -1) {
+      const data = await this.doFetch<Milestone[]>(
+        "POST",
+        "/newprojectmilestones",
+        milestoneData
+      );
+      console.log(data);
+    } else {
+      const data = await this.doFetch<Milestone[]>(
+        "PUT",
+        "/projectrevise",
+        milestoneData
+      );
+    }
   }
 
   async doFetch<T>(
@@ -97,6 +75,15 @@ export class Api {
 
   async getAllProjects(): Promise<TResponse<AllProjects>> {
     const data = await this.doFetch<AllProjects>("GET", `/projects`);
+    return data;
+  }
+
+  async deleteProject(id: number | string): Promise<TResponse<AllProjects>> {
+    const data = await this.doFetch<AllProjects>(
+      "DELETE",
+      `/project/${id}/delete`
+    );
+    console.log(data)
     return data;
   }
 }

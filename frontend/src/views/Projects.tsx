@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { authFetch, useAuth } from "../auth/AuthProvider";
 import { useApi } from "../api/api";
 import { Project } from "../api/types";
+import AddButton from "../components/AddButton";
 
 function Projects() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -14,7 +15,6 @@ function Projects() {
   const [currentProject, setCurrentProject] = useState<Project>({});
   const [userTitle, setUserTitle] = useState("");
   const [logged, session] = useAuth();
-  console.log({ session });
 
   const api = useApi(authFetch);
 
@@ -29,7 +29,6 @@ function Projects() {
         setProjects(data.projects);
         setCurrentProject(data.projects[0]);
         setUserTitle(data.username);
-        console.log(data);
       }
     };
     thing();
@@ -65,6 +64,7 @@ function Projects() {
                 Edit Project
               </button>
             </div>
+            <AddButton/>
           </>
         </TabContainer>
       ) : (

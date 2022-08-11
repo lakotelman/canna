@@ -19,7 +19,7 @@ function editProject() {
       project_id: projectId!,
       title: "",
       date_created: "",
-      tasks: [{ title: "" }],
+      tasks: [{ title: "", id: -1 }],
     };
   }
 
@@ -35,6 +35,22 @@ function editProject() {
 
   function submitForm(e: any) {
     e.preventDefault();
+    if (!project.milestones) {
+      return;
+    }
+    for (let milestone of project.milestones) {
+      console.log(milestone);
+      api.newProjPayload(milestone, project.id!);
+    }
+  }
+  function deleteProject(e: any, projId: string | number) {
+    e.preventDefault();
+    const confirmBox = window.confirm(
+      "Do you really want to delete this? It cannot be undone"
+    );
+    if (confirmBox === true) {
+      api.deleteProject(projectId!);
+    }
   }
 
   // Milestone Actions
@@ -47,14 +63,16 @@ function editProject() {
     project.milestones.push(milestoneFactory());
     setProject({ ...project });
   }
-  
+
   function removeMilestone(e: any, idx: number) {
+    e.preventDefault();
     let newList = project.milestones?.splice(idx, 1);
     project.milestones = newList;
     setProject({ ...project });
   }
 
   function moveMilestoneDown(e: any, idx: number) {
+    e.preventDefault();
     if (!project.milestones) {
       project.milestones = [];
     }
@@ -71,6 +89,7 @@ function editProject() {
   }
 
   function moveMilestoneUp(e: any, idx: number) {
+    e.preventDefault();
     if (!project.milestones) {
       project.milestones = [];
     }
@@ -120,12 +139,20 @@ function editProject() {
                     removeMilestone={(e) => removeMilestone(e, i)}
                     milestone={m}
                     updateMilestone={(newm) => updateMilestone(i, newm)}
-                    key = {i}
+                    key={i}
                   />
                 );
               })}
-              <button className="bg-lightGreen p-2 rounded-full w-full">Save</button>
+            <button className="bg-lightGreen p-2 rounded-full w-full">
+              Save
+            </button>
           </form>
+          <button
+            onClick={(e) => deleteProject(e, project.id!)}
+            className="bg-lightPink m-2 p-1 rounded-full text-sm"
+          >
+            Delete Entire Project
+          </button>
         </div>
       </TabContainer>
     </>
