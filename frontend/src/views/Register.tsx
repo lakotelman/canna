@@ -32,7 +32,7 @@ function Register() {
         confirmPassword: confirmPassword,
       };
       console.log(opts);
-      fetch(`${import.meta.env.VITE_BASE_URL}/registration`, {
+      fetch("$https://canna-server.herokuapp.com/api/registration", {
         method: "post",
         body: JSON.stringify(opts),
       })

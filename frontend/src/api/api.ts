@@ -1,11 +1,9 @@
-import { Maybe } from "react-token-auth/lib/types";
-import { Session } from "../auth/AuthProvider";
 import { AllProjects, Milestone, Project, Task } from "./types";
 
 type Methods = "POST" | "GET" | "UPDATE" | "DELETE" | "PUT";
 
 export function useApi(requests: typeof fetch): Api {
-  return new Api(import.meta.env.VITE_BASE_URL, requests);
+  return new Api("https://canna-server.herokuapp.com/api", requests);
 }
 
 export interface TResponse<T> {

@@ -18,8 +18,7 @@ function Login() {
       username: username,
       password: password,
     };
-    console.log(opts);
-    fetch(`${import.meta.env.VITE_BASE_URL}login`, {
+    fetch("https://canna-server.herokuapp.com/api/login", {
       method: "post",
       body: JSON.stringify(opts),
     })
@@ -114,7 +113,7 @@ function Login() {
             </div>
           </>
         ) : (
-          <Navigate to="/projects"/>
+          <Navigate to="/projects" />
         )}
       </div>
     </>
