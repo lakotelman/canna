@@ -23,7 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 
-.venv 
+.venv
+.env 
 .flaskenv 
 __pycache__
 migrations
