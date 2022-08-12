@@ -1,4 +1,4 @@
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { LandingLayout } from "../layouts/Landing";
 import { useAuth } from "../auth/AuthProvider";
 import { useState } from "react";
@@ -9,6 +9,7 @@ function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const onSubmitClick = (e: any) => {
@@ -39,6 +40,7 @@ function Register() {
         .then((token) => {
           if (token.access_token) {
             console.log(token);
+            navigate("/login");
           } else {
             console.log("Something is wrong");
           }
@@ -158,7 +160,7 @@ function Register() {
                 </div>
                 <div className="mt-6 text-grey-dark">
                   Already have an account?
-                  <a className="text-blue-600 hover:underline" href="#">
+                  <a className="text-lightLavender hover:underline" href="#">
                     <Link to="/Login"> Log in</Link>
                   </a>
                 </div>

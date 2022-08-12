@@ -33,7 +33,7 @@ function Landing() {
               </div>
               <div className="mt-6">
                 <h2 className="text-2xl font-extrabold tracking-tight text-gray-900">
-                  Break the big ideas down.
+                  Break down the big ideas.
                 </h2>
                 <p className="mt-4 text-lg">
                   Using project Milestones and tasks, divide your project into
