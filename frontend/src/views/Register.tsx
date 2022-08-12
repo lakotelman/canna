@@ -32,7 +32,7 @@ function Register() {
         confirmPassword: confirmPassword,
       };
       console.log(opts);
-      fetch("http://127.0.0.1:5000/api/registration", {
+      fetch(`${import.meta.env.VITE_BASE_URL}/registration`, {
         method: "post",
         body: JSON.stringify(opts),
       })

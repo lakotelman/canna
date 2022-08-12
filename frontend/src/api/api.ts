@@ -5,7 +5,7 @@ import { AllProjects, Milestone, Project, Task } from "./types";
 type Methods = "POST" | "GET" | "UPDATE" | "DELETE" | "PUT";
 
 export function useApi(requests: typeof fetch): Api {
-  return new Api("/api", requests);
+  return new Api(import.meta.env.VITE_BASE_URL, requests);
 }
 
 export interface TResponse<T> {
@@ -45,10 +45,7 @@ export class Api {
   }
 
   async updateStatus(task_id: number) {
-    const data = await this.doFetch<Task>(
-      "PUT",
-      `/updatestatus/${task_id}`
-    );
+    const data = await this.doFetch<Task>("PUT", `/updatestatus/${task_id}`);
   }
 
   async doFetch<T>(

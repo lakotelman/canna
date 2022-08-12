@@ -19,7 +19,7 @@ function Login() {
       password: password,
     };
     console.log(opts);
-    fetch("http://127.0.0.1:5000/api/login", {
+    fetch(`${import.meta.env.VITE_BASE_URL}login`, {
       method: "post",
       body: JSON.stringify(opts),
     })

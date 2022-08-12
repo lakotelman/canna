@@ -11,7 +11,7 @@ export default function NewProjectForm() {
     let opts = {
       title: projectTitle,
     };
-    const response = await fetch("http://127.0.0.1:5000/api/addproject", {
+    const response = await fetch("https://canna-server.herokuapp.com/api/addproject", {
       method: "post",
       body: JSON.stringify(opts),
       headers: new Headers({
