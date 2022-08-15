@@ -82,7 +82,7 @@ function Landing() {
                   Stay focused with clear organization.
                 </h2>
                 <p className="mt-4 text-lg">
-                  Plans aren't always permenant. Adjust the order and details of
+                  Plans aren't always permanent. Adjust the order and details of
                   your tasks and milestones as needed.
                 </p>
                 <div className="mt-6"></div>
