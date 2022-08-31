@@ -3,7 +3,7 @@ import { AllProjects, Milestone, Project, Task } from "./types";
 type Methods = "POST" | "GET" | "UPDATE" | "DELETE" | "PUT";
 
 export function useApi(requests: typeof fetch): Api {
-  return new Api("https://canna-server.herokuapp.com/api", requests);
+  return new Api(import.meta.env.VITE_BASE_URL, requests);
 }
 
 export interface TResponse<T> {

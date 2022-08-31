@@ -16,7 +16,6 @@ import "./App.css";
 import EditProject from "./views/EditProject";
 
 function App() {
- 
   return (
     <>
       <Router>
